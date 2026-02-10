@@ -12,7 +12,7 @@ module ChatManager
       end
 
       def add_migrations
-        migration_template "db/migrate/20260209050655_create_chat_manager_chat.rb", "db/migrate/create_chat_manager_chat.rb"
+        migration_template "db/migrate/create_chat_manager_chat.rb", "db/migrate/create_chat_manager_chat.rb"
       end
     end
   end
