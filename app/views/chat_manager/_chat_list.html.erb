@@ -1,6 +1,8 @@
 <%
   active_uuid = locals[:active_uuid]
   card_path = locals[:card_path]
+  download_csv_path = locals[:download_csv_path]
+  download_all_csv_path = locals[:download_all_csv_path]
   titled_chats = @chats.select { |c| c.title.present? }
 %>
 
@@ -8,9 +10,16 @@
 <% if titled_chats.present? %>
   <div class="chat-stack" data-controller="chat">
     <% titled_chats.each_with_index do |ann, idx| %>
-      <%= render 'chat_manager/chat_card', locals: { ann: ann, next_ann: titled_chats[idx + 1], is_active: ann.id == active_uuid, card_path: card_path } %>
+      <%= render 'chat_manager/chat_card', locals: { ann: ann, next_ann: titled_chats[idx + 1], is_active: ann.id == active_uuid, card_path: card_path, download_csv_path: download_csv_path } %>
     <% end %>
   </div>
+  <% if download_all_csv_path %>
+    <div class="chat-download-all">
+      <%= link_to download_all_csv_path, class: "chat-download-all-link" do %>
+        <i class="bi bi-download"></i> Download All Chats CSV
+      <% end %>
+    </div>
+  <% end %>
 <% else %>
   <p class="chat-empty">No chat yet</p>
 <% end %>

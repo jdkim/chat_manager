@@ -2,6 +2,7 @@
   ann = locals[:ann]
   is_active = locals[:is_active]
   card_path = locals[:card_path]
+  download_csv_path = locals[:download_csv_path]
 %>
 
 <div class="chat-card<%= ' is-active' if is_active %>"
@@ -11,9 +12,16 @@
      data-chat-title-edit-uuid-value="<%= ann.uuid %>"
      data-chat-title-edit-full-title-value="<%= ann.title.to_s %>"
      data-chat-title-edit-update-url-value="<%= main_app.update_title_chat_path(ann.uuid) %>">
-  <%= link_to card_path.call(ann.uuid), class: "chat-card-link", data: { "chat-title-edit-target": "link" } do %>
-    <div class="chat-card-prompt" data-chat-title-edit-target="display"><%= truncate(ann.title.to_s, length: 30) %></div>
-  <% end %>
+  <div class="chat-card-row">
+    <%= link_to card_path.call(ann.uuid), class: "chat-card-link", data: { "chat-title-edit-target": "link" } do %>
+      <div class="chat-card-prompt" data-chat-title-edit-target="display"><%= truncate(ann.title.to_s, length: 30) %></div>
+    <% end %>
+    <% if download_csv_path %>
+      <%= link_to download_csv_path.call(ann.uuid), class: "chat-card-download", title: "Download CSV" do %>
+        <i class="bi bi-download"></i>
+      <% end %>
+    <% end %>
+  </div>
   <input type="text" class="chat-card-title-input"
          data-chat-title-edit-target="input"
          data-action="keydown->chat-title-edit#handleKeydown blur->chat-title-edit#save"
