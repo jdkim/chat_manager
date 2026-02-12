@@ -1,0 +1,16 @@
+<%
+  active_uuid = locals[:active_uuid]
+  card_path = locals[:card_path]
+  titled_chats = @chats.select { |c| c.title.present? }
+%>
+
+<h2>chat</h2>
+<% if titled_chats.present? %>
+  <div class="chat-stack" data-controller="chat">
+    <% titled_chats.each_with_index do |ann, idx| %>
+      <%= render 'chat_manager/chat_card', locals: { ann: ann, next_ann: titled_chats[idx + 1], is_active: ann.id == active_uuid, card_path: card_path } %>
+    <% end %>
+  </div>
+<% else %>
+  <p class="chat-empty">No chat yet</p>
+<% end %>
