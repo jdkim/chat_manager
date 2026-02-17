@@ -15,7 +15,7 @@
   </div>
   <% if download_all_csv_path %>
     <div class="chat-download-all">
-      <%= link_to download_all_csv_path, class: "chat-download-all-link" do %>
+      <%= link_to download_all_csv_path, class: "chat-download-all-link", data: { turbo: false } do %>
         <i class="bi bi-download"></i> Download All Chats CSV
       <% end %>
     </div>

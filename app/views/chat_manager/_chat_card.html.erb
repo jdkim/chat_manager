@@ -17,7 +17,7 @@
       <div class="chat-card-prompt" data-chat-title-edit-target="display"><%= truncate(ann.title.to_s, length: 30) %></div>
     <% end %>
     <% if download_csv_path %>
-      <%= link_to download_csv_path.call(ann.uuid), class: "chat-card-download", title: "Download CSV" do %>
+      <%= link_to download_csv_path.call(ann.uuid), class: "chat-card-download", title: "Download CSV", data: { turbo: false } do %>
         <i class="bi bi-download"></i>
       <% end %>
     <% end %>
