@@ -13,7 +13,7 @@ A Rails engine for managing LLM chat conversations with CSV export, auto-titling
 
 ## Requirements
 
-- Ruby 3.4+
+- Ruby 4.0+
 - Rails 8.1+
 
 ## Installation
@@ -107,6 +107,13 @@ download_all_csv  # Download all user chats as CSV
 
 CSV output includes the following columns: `Chat Title`, `Role`, `Message Content`, `Sent At`, `Model`.
 
+**Prerequisites:** The host application must provide:
+
+- `current_user` method in the controller (returning an object with a `chats` association)
+- `chats` association that supports `.includes(messages: :prompt_manager_prompt_execution)`
+- `ordered_messages` method on the Chat model
+- Each message must have a `role` attribute and a `prompt_manager_prompt_execution` association with `prompt` and `response` attributes
+
 ### TitleGeneratable (Model Concern)
 
 Generates a chat title from the initial user prompt:
@@ -123,21 +130,21 @@ Use the `chat_list` helper in your views to render the chat list UI:
 
 ```erb
 <%= chat_list(
-  card_path: ->(chat) { chat_path(chat.uuid) },
+  ->(uuid) { chat_path(uuid) },
   active_uuid: @active_uuid,
-  download_csv_path: ->(chat) { download_csv_chat_path(chat.uuid) },
+  download_csv_path: ->(uuid) { download_csv_chat_path(uuid) },
   download_all_csv_path: download_all_csv_chats_path
 ) %>
 ```
 
 Parameters:
 
-| Parameter | Required | Description |
-|---|---|---|
-| `card_path` | Yes | Proc/lambda returning the path for each chat card link |
-| `active_uuid` | No | UUID of the currently active chat (for highlighting) |
-| `download_csv_path` | No | Proc/lambda returning the CSV download path for each chat |
-| `download_all_csv_path` | No | Path for the "Download All Chats CSV" button |
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `card_path` | Positional | Yes | Proc/lambda that receives a UUID string and returns the path for each chat card link |
+| `active_uuid` | Keyword | No | ID of the currently active chat (for highlighting) |
+| `download_csv_path` | Keyword | No | Proc/lambda that receives a UUID string and returns the CSV download path for each chat |
+| `download_all_csv_path` | Keyword | No | Path for the "Download All Chats CSV" button |
 
 ### UI Components
 
@@ -155,9 +162,14 @@ The engine provides two partials:
 The engine includes CSS for the chat interface. Available CSS classes:
 
 - `.chat-stack` — Flex column layout for the chat list
-- `.chat-card` — Card styling with hover effects and active state
-- `.chat-card-link` — Grid layout for card content
+- `.chat-card` — Card styling with hover effects and active state (`.is-active` modifier)
+- `.chat-card-row` — Flex row layout for card content and download button
+- `.chat-card-link` — Grid layout for card link area
+- `.chat-card-prompt` — Title text display with line clamping
+- `.chat-card-number` — Chat number label
+- `.chat-card-download` — Per-chat CSV download button
 - `.chat-card-title-input` — Inline edit input field
+- `.chat-download-all` — Container for the bulk download button
 - `.chat-download-all-link` — Bulk download button
 
 ## Contributing
