@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    chat_manager (0.1.0)
+    chat_manager (0.2.0)
       csv
       rails (>= 8.1.2)
 
