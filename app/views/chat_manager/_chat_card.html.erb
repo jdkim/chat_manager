@@ -3,6 +3,7 @@
   is_active = locals[:is_active]
   card_path = locals[:card_path]
   download_csv_path = locals[:download_csv_path]
+  delete_path = locals[:delete_path]
 %>
 
 <div class="chat-card<%= ' is-active' if is_active %>"
@@ -19,6 +20,16 @@
     <% if download_csv_path %>
       <%= link_to download_csv_path.call(ann.uuid), class: "chat-card-download", title: "Download CSV", data: { turbo: false } do %>
         <i class="bi bi-download"></i>
+      <% end %>
+    <% end %>
+    <% if delete_path %>
+      <%= button_to delete_path.call(ann.uuid),
+                    method: :delete,
+                    class: "chat-card-delete",
+                    title: "Delete chat",
+                    form: { class: "chat-card-delete-form" },
+                    data: { turbo_confirm: "Delete this chat? This cannot be undone." } do %>
+        <i class="bi bi-trash"></i>
       <% end %>
     <% end %>
   </div>

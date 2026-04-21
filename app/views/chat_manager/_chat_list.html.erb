@@ -3,6 +3,7 @@
   card_path = locals[:card_path]
   download_csv_path = locals[:download_csv_path]
   download_all_csv_path = locals[:download_all_csv_path]
+  delete_path = locals[:delete_path]
   titled_chats = @chats.select { |c| c.title.present? }
 %>
 
@@ -10,7 +11,7 @@
 <% if titled_chats.present? %>
   <div class="chat-stack" data-controller="chat">
     <% titled_chats.each_with_index do |ann, idx| %>
-      <%= render 'chat_manager/chat_card', locals: { ann: ann, next_ann: titled_chats[idx + 1], is_active: ann.id == active_uuid, card_path: card_path, download_csv_path: download_csv_path } %>
+      <%= render 'chat_manager/chat_card', locals: { ann: ann, next_ann: titled_chats[idx + 1], is_active: ann.id == active_uuid, card_path: card_path, download_csv_path: download_csv_path, delete_path: delete_path } %>
     <% end %>
   </div>
   <% if download_all_csv_path %>

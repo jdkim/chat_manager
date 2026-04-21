@@ -13,7 +13,7 @@ A Rails engine for managing LLM chat conversations with CSV export, auto-titling
 
 ## Requirements
 
-- Ruby 4.0+
+- Ruby 3.4+
 - Rails 8.1+
 
 ## Installation
@@ -133,7 +133,8 @@ Use the `chat_list` helper in your views to render the chat list UI:
   ->(uuid) { chat_path(uuid) },
   active_uuid: @active_uuid,
   download_csv_path: ->(uuid) { download_csv_chat_path(uuid) },
-  download_all_csv_path: download_all_csv_chats_path
+  download_all_csv_path: download_all_csv_chats_path,
+  delete_path: ->(uuid) { chat_path(uuid) }
 ) %>
 ```
 
@@ -145,6 +146,7 @@ Parameters:
 | `active_uuid` | Keyword | No | ID of the currently active chat (for highlighting) |
 | `download_csv_path` | Keyword | No | Proc/lambda that receives a UUID string and returns the CSV download path for each chat |
 | `download_all_csv_path` | Keyword | No | Path for the "Download All Chats CSV" button |
+| `delete_path` | Keyword | No | Proc/lambda that receives a UUID string and returns the delete path for each chat. When provided, a delete button (trash icon) appears on each card. The host app must provide a `DELETE` route and controller action. |
 
 ### UI Components
 
