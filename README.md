@@ -110,9 +110,9 @@ CSV output includes the following columns: `Chat Title`, `Role`, `Message Conten
 **Prerequisites:** The host application must provide:
 
 - `current_user` method in the controller (returning an object with a `chats` association)
-- `chats` association that supports `.includes(messages: :prompt_manager_prompt_execution)`
+- `chats` association that supports `.includes(messages: :prompt_navigator_prompt_execution)`
 - `ordered_messages` method on the Chat model
-- Each message must have a `role` attribute and a `prompt_manager_prompt_execution` association with `prompt` and `response` attributes
+- Each message must have a `role` attribute and a `prompt_navigator_prompt_execution` association with `prompt` and `response` attributes
 
 ### TitleGeneratable (Model Concern)
 

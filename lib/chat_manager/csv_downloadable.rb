@@ -9,7 +9,7 @@ module ChatManager
     CSV_HEADERS = [ "Chat Title", "Role", "Message Content", "Sent At", "Model" ].freeze
 
     def download_csv
-      chat = current_user.chats.includes(messages: :prompt_manager_prompt_execution).find_by!(uuid: params[:id])
+      chat = current_user.chats.includes(messages: :prompt_navigator_prompt_execution).find_by!(uuid: params[:id])
 
       csv_data = generate_csv_for_chats([ chat ])
 
@@ -18,7 +18,7 @@ module ChatManager
     end
 
     def download_all_csv
-      chats = current_user.chats.includes(messages: :prompt_manager_prompt_execution)
+      chats = current_user.chats.includes(messages: :prompt_navigator_prompt_execution)
 
       csv_data = generate_csv_for_chats(chats)
 
@@ -32,7 +32,7 @@ module ChatManager
         csv << CSV_HEADERS
         chats.each do |chat|
           chat.ordered_messages.each do |msg|
-            pe = msg.prompt_manager_prompt_execution
+            pe = msg.prompt_navigator_prompt_execution
             content = msg.role == "user" ? pe&.prompt : pe&.response
             csv << [ chat.title, msg.role, content, msg.created_at, chat.model ]
           end

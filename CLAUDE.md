@@ -38,7 +38,7 @@ The engine exposes three capability surfaces; each is opt-in by the host app.
 - Asset paths under `app/assets/stylesheets` and `app/javascript` are appended, and `chat_manager/chat.css` + `chat_manager/application.css` are added to `assets.precompile`.
 
 ### Opt-in concerns (host controller/model includes them)
-- `ChatManager::CsvDownloadable` (controller) — `download_csv` / `download_all_csv` actions. Depends on the host providing: `current_user.chats`, `chats.includes(messages: :prompt_manager_prompt_execution)`, `Chat#ordered_messages`, and messages with `role` plus a `prompt_manager_prompt_execution` association exposing `prompt` and `response`. CSV columns are fixed: `Chat Title, Role, Message Content, Sent At, Model`.
+- `ChatManager::CsvDownloadable` (controller) — `download_csv` / `download_all_csv` actions. Depends on the host providing: `current_user.chats`, `chats.includes(messages: :prompt_navigator_prompt_execution)`, `Chat#ordered_messages`, and messages with `role` plus a `prompt_navigator_prompt_execution` association exposing `prompt` and `response`. CSV columns are fixed: `Chat Title, Role, Message Content, Sent At, Model`.
 - `ChatManager::TitleGeneratable` (model) — `generate_title(prompt_text, jwt_token)` is a no-op if `title` is present; otherwise delegates to `summarize_for_title`, which the including model **must** implement (raises `NotImplementedError` otherwise). Result is truncated to 255 chars; all `StandardError` is swallowed and logged.
 
 ### View layer coupling to the host app
