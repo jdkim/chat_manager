@@ -2,25 +2,57 @@
   active_uuid = locals[:active_uuid]
   card_path = locals[:card_path]
   download_csv_path = locals[:download_csv_path]
-  download_all_csv_path = locals[:download_all_csv_path]
   delete_path = locals[:delete_path]
-  titled_chats = @chats.select { |c| c.title.present? }
+  batch_delete_path = locals[:batch_delete_path]
+  batch_download_csv_path = locals[:batch_download_csv_path]
+  titled_chats = @chats.select { |c| c.title.present? }.reverse
+  selectable = batch_delete_path.present? || batch_download_csv_path.present?
 %>
 
-<h2>chat</h2>
 <% if titled_chats.present? %>
-  <div class="chat-stack" data-controller="chat">
-    <% titled_chats.each_with_index do |ann, idx| %>
-      <%= render 'chat_manager/chat_card', locals: { ann: ann, next_ann: titled_chats[idx + 1], is_active: ann.id == active_uuid, card_path: card_path, download_csv_path: download_csv_path, delete_path: delete_path } %>
-    <% end %>
-  </div>
-  <% if download_all_csv_path %>
-    <div class="chat-download-all">
-      <%= link_to download_all_csv_path, class: "chat-download-all-link", data: { turbo: false } do %>
-        <i class="bi bi-download"></i> Download All Chats CSV
+  <div class="chat-stack"
+       data-controller="chat"
+       data-chat-batch-delete-path-value="<%= batch_delete_path %>"
+       data-chat-batch-download-csv-path-value="<%= batch_download_csv_path %>">
+    <div class="chat-list-toolbar">
+      <div class="chat-list-heading" data-chat-target="heading">
+        <h2>Chats</h2>
+      </div>
+      <div class="chat-list-bar hidden" data-chat-target="bar">
+        <span class="chat-list-bar-count">
+          <span data-chat-target="selectedCount">0</span> selected
+        </span>
+        <div class="chat-list-bar-actions">
+          <% if batch_download_csv_path %>
+            <button type="button"
+                    class="chat-list-bar-download"
+                    title="Download selected as CSV"
+                    data-action="click->chat#bulkDownload">
+              <i class="bi bi-download"></i>
+            </button>
+          <% end %>
+          <% if batch_delete_path %>
+            <button type="button"
+                    class="chat-list-bar-delete"
+                    title="Delete selected"
+                    data-action="click->chat#bulkDelete">
+              <i class="bi bi-trash"></i>
+            </button>
+          <% end %>
+        </div>
+      </div>
+      <% if selectable %>
+        <input type="checkbox"
+               class="chat-list-select-all"
+               data-chat-target="selectAll"
+               data-action="change->chat#toggleAll"
+               title="Select all" />
       <% end %>
     </div>
-  <% end %>
+    <% titled_chats.each_with_index do |ann, idx| %>
+      <%= render 'chat_manager/chat_card', locals: { ann: ann, next_ann: titled_chats[idx + 1], is_active: ann.uuid == active_uuid, card_path: card_path, download_csv_path: download_csv_path, delete_path: delete_path, selectable: selectable } %>
+    <% end %>
+  </div>
 <% else %>
   <p class="chat-empty">No chat yet</p>
 <% end %>

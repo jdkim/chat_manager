@@ -4,6 +4,7 @@
   card_path = locals[:card_path]
   download_csv_path = locals[:download_csv_path]
   delete_path = locals[:delete_path]
+  selectable = locals[:selectable]
 %>
 
 <div class="chat-card<%= ' is-active' if is_active %>"
@@ -14,24 +15,45 @@
      data-chat-title-edit-full-title-value="<%= ann.title.to_s %>"
      data-chat-title-edit-update-url-value="<%= main_app.update_title_chat_path(ann.uuid) %>">
   <div class="chat-card-row">
+    <% if selectable %>
+      <input type="checkbox"
+             class="chat-card-checkbox"
+             data-chat-target="checkbox"
+             data-uuid="<%= ann.uuid %>"
+             data-action="click->chat#toggle" />
+    <% end %>
     <%= link_to card_path.call(ann.uuid), class: "chat-card-link", data: { "chat-title-edit-target": "link" } do %>
       <div class="chat-card-prompt" data-chat-title-edit-target="display"><%= truncate(ann.title.to_s, length: 30) %></div>
     <% end %>
-    <% if download_csv_path %>
-      <%= link_to download_csv_path.call(ann.uuid), class: "chat-card-download", title: "Download CSV", data: { turbo: false } do %>
-        <i class="bi bi-download"></i>
-      <% end %>
-    <% end %>
-    <% if delete_path %>
-      <%= button_to delete_path.call(ann.uuid),
-                    method: :delete,
-                    class: "chat-card-delete",
-                    title: "Delete chat",
-                    form: { class: "chat-card-delete-form" },
-                    data: { turbo_confirm: "Delete this chat? This cannot be undone." } do %>
-        <i class="bi bi-trash"></i>
-      <% end %>
-    <% end %>
+    <div class="chat-card-menu-wrap" data-controller="chat-menu">
+      <button type="button"
+              class="chat-card-menu-btn"
+              title="More actions"
+              data-action="click->chat-menu#toggle">
+        <i class="bi bi-three-dots-vertical"></i>
+      </button>
+      <div class="chat-card-menu" data-chat-menu-target="menu">
+        <button type="button"
+                class="chat-card-menu-item"
+                data-action="click->chat-menu#close click->chat-title-edit#start">
+          <i class="bi bi-pencil"></i> Rename
+        </button>
+        <% if delete_path %>
+          <%= button_to delete_path.call(ann.uuid),
+                        method: :delete,
+                        class: "chat-card-menu-item chat-card-menu-item-danger",
+                        form: { class: "chat-card-menu-form" },
+                        data: { turbo_confirm: "Delete this chat? This cannot be undone." } do %>
+            <i class="bi bi-trash"></i> Delete
+          <% end %>
+        <% end %>
+        <% if download_csv_path %>
+          <%= link_to download_csv_path.call(ann.uuid), class: "chat-card-menu-item", data: { turbo: false } do %>
+            <i class="bi bi-download"></i> Download
+          <% end %>
+        <% end %>
+      </div>
+    </div>
   </div>
   <input type="text" class="chat-card-title-input"
          data-chat-title-edit-target="input"

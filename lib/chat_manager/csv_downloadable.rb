@@ -17,12 +17,13 @@ module ChatManager
       send_data csv_data, filename: filename, type: "text/csv"
     end
 
-    def download_all_csv
-      chats = current_user.chats.includes(messages: :prompt_navigator_prompt_execution)
+    def download_selected_csv
+      uuids = Array(params[:uuids]).reject(&:blank?)
+      chats = current_user.chats.where(uuid: uuids).includes(messages: :prompt_navigator_prompt_execution)
 
       csv_data = generate_csv_for_chats(chats)
 
-      send_data csv_data, filename: "all_chats_#{Date.today}.csv", type: "text/csv"
+      send_data csv_data, filename: "chats_#{Date.today}.csv", type: "text/csv"
     end
 
     private
