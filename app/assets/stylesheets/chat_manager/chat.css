@@ -162,8 +162,21 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 6px;
     min-height: 28px;
+    /* Pin the heading + bulk-action row to the top of the scrollable
+       sidebar so it stays accessible when the chat list is long. The
+       opaque background masks cards scrolling underneath; the explicit
+       z-index lifts the toolbar above sibling cards in stacking. The
+       negative top/side margins extend the toolbar across the host
+       sidebar's 8px padding so scrolling cards can't peek through the
+       gap above it; equal padding keeps the toolbar's content in its
+       natural place. */
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    z-index: 2;
+    margin: -8px -8px 6px;
+    padding: 8px 8px 0;
 
     h2 {
         margin: 0;
