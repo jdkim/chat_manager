@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] - 2026-06-04
+
+### Added
+
+- Gmail-style multi-select on the chat list — checkbox per card, a kebab menu (delete selected, export selected) on the list toolbar, and a "select all visible" affordance. Selection state lives in a Stimulus controller; the host still owns the destroy / export routes.
+
+### Changed
+
+- Chat-list toolbar is now sticky and visually covers the host sidebar's top padding so chats scroll under it cleanly.
+
+### Tested
+
+- `ChatManager::CsvDownloadable#generate_csv_for_chats` role routing + interleaving of user / assistant rows.
+- `ChatManager::TitleGeneratable` short-circuit when `title` is already set, 255-char truncation, and rescue behavior on `StandardError`.
+
 ## [1.1.1] - 2026-05-11
 
 ### Fixed
