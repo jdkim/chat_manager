@@ -22,7 +22,7 @@
              data-uuid="<%= ann.uuid %>"
              data-action="click->chat#toggle" />
     <% end %>
-    <%= link_to card_path.call(ann.uuid), class: "chat-card-link", data: { "chat-title-edit-target": "link" } do %>
+    <%= link_to card_path.call(ann.uuid), class: "chat-card-link", data: { "chat-title-edit-target": "link" }, title: ann.title.to_s do %>
       <div class="chat-card-prompt" data-chat-title-edit-target="display"><%= truncate(ann.title.to_s, length: 30) %></div>
     <% end %>
     <div class="chat-card-menu-wrap" data-controller="chat-menu">
