@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.homepage    = "https://github.com/jdkim/chat_manager"
   spec.summary     = "A Rails engine for managing LLM chat conversations with CSV export and auto-titling."
   spec.description = "ChatManager is a Rails engine that provides chat management, automatic title generation from initial prompts, and CSV export for individual or bulk chat downloads. It includes UI components with Stimulus-powered inline title editing and a database migration generator."
-  spec.license     = "MIT"
+  spec.license     = "Apache-2.0"
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
