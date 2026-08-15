@@ -84,6 +84,24 @@ class Chat < ApplicationRecord
 end
 ```
 
+### 4. Verify installation
+
+Run each of these against your host app after `bin/rails db:migrate`:
+
+```bash
+# a) The chat_manager_chats table was created
+bin/rails runner 'puts ActiveRecord::Base.connection.table_exists?("chat_manager_chats")'
+# → true
+
+# b) The chat_list view helper is auto-mounted into ActionView
+bin/rails runner 'puts ApplicationController.helpers.respond_to?(:chat_list)'
+# → true
+
+# c) The ChatManageable controller concern is auto-included
+bin/rails runner 'puts ApplicationController.include?(ChatManager::ChatManageable)'
+# → true
+```
+
 ## Usage
 
 ### ChatManageable (Controller Concern)
@@ -173,6 +191,23 @@ The engine includes CSS for the chat interface. Available CSS classes:
 - `.chat-card-title-input` — Inline edit input field
 - `.chat-download-all` — Container for the bulk download button
 - `.chat-download-all-link` — Bulk download button
+
+## Development
+
+After cloning the repository:
+
+```bash
+bundle install
+
+# Run the test suite (boots test/dummy under the hood)
+bin/rails test
+
+# Run a single test file
+bin/rails test test/path/to/file_test.rb
+
+# Lint (uses rubocop-rails-omakase)
+bin/rubocop
+```
 
 ## Contributing
 
