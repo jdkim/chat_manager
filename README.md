@@ -209,6 +209,12 @@ bin/rails test test/path/to/file_test.rb
 bin/rubocop
 ```
 
+## Citation
+
+This engine is a component of the AIbranch platform. If you use it in your research, please cite:
+
+> Kim, J.-D. (2026). *AIbranch: A platform for branched multi-model LLM conversations*. *SoftwareX*. <https://www.sciencedirect.com/science/article/pii/S2352711026004747>
+
 ## Related repositories
 
 - [`llm_meta_client`](https://github.com/jdkim/llm_meta_client) — the main consumer of this gem
